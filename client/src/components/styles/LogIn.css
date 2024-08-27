@@ -1,0 +1,24 @@
+/* styling for the form
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    border: 2px solid black;
+    border-radius: 2%;
+    background-color: lightgray;
+    padding: 15px;
+    width: 100%
+}
+
+/*changes the color of buttons when hovered over them*/
+/* button:hover {
+background-color: green;
+justify-content: center;
+} */
+
+/* changes the size of the input text boxes */
+/* .inputSize {
+    font-size: large;
+    width: 50%;
+} */ 
