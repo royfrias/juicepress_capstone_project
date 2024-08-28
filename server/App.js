@@ -1,18 +1,18 @@
-import express, { response } from 'express';
+import express, { response } from "express";
 import "dotenv/config";
 import router from "./controllers/routes.js";
 import userRouter from "./controllers/routes-user.js";
 import adminRouter from "./controllers/routes-admin.js";
 import mongoose from "mongoose";
 import cors from "cors";
-import axios from 'axios';
+import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
-import config from './config/index.js'
-import AWS from 'aws-sdk'
-import multer from 'multer'
-import Announcement from './models/announcements.js';
-import { request } from 'http';
+import config from "./config/index.js";
+import AWS from "aws-sdk";
+import multer from "multer";
+import Announcement from "./models/announcements.js";
+import { request } from "http";
 // import s3Router from './controllers/routes-s3.js';
 
 // define __dirname in ES modules
@@ -51,7 +51,6 @@ const __dirname = path.dirname(__filename);
 //     region: bucketRegion
 // });---->MO
 
-
 // Slack configuration
 const token = process.env.SLACK_BOT_TOKEN;
 const channelId = process.env.SLACK_CHANNEL_ID;
@@ -61,9 +60,12 @@ let userIdToUserMap = {}; // Added Slack configuration
 // Slack function to fetch user map
 const fetchUserMap = async () => {
   try {
-    const response = await axios.get('https://slack.com/api/users.list', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      "https://juicepress-capstone-project.onrender.com/api/users.list",
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     if (response.data && response.data.ok) {
       userIdToUserMap = response.data.members.reduce((map, user) => {
@@ -71,10 +73,13 @@ const fetchUserMap = async () => {
         return map;
       }, {});
     } else {
-      console.error('Error fetching users: Response data not in expected format', response.data);
+      console.error(
+        "Error fetching users: Response data not in expected format",
+        response.data
+      );
     }
   } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error("Error fetching users:", error);
   }
 };
 
@@ -86,18 +91,17 @@ const app = express();
 // const storage = multer.memoryStorage()---->MO
 // const upload = multer({ storage: storage})---->MO
 
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use("/", router);
-app.use("/user", userRouter)
-app.use("/admin", adminRouter)
+app.use("/user", userRouter);
+app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
   secretAccessKey: process.env.AWS_SECRET_KEY,
-  region: 'us-east-1',
+  region: "us-east-1",
 });
 
 const s3 = new AWS.S3();
@@ -119,10 +123,10 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
     fileSize: 5 * 1024 * 1024, // limit file size to 5MB
-  }
+  },
 });
 
-app.post('/upload', upload.single(), async (request, response) => {
+app.post("/upload", upload.single(), async (request, response) => {
   // const announcementData = {
   //   announcementTitle: request.body.announcementTitle,
   //   announcementContent: request.body.announcementContent,
@@ -138,7 +142,6 @@ app.post('/upload', upload.single(), async (request, response) => {
   // //   announcementData.video = request.files.video[0].filename;
   // // };
 
-
   // const announcement = new Announcement(announcementData);
   // announcement.save();
   // response.send({
@@ -146,9 +149,8 @@ app.post('/upload', upload.single(), async (request, response) => {
   //   announcement,
   // });
 
-
   const params = {
-    Bucket: 'juicepress1',
+    Bucket: "juicepress1",
     Key: request.file.originalname,
     Body: request.file.buffer,
   };
@@ -156,13 +158,13 @@ app.post('/upload', upload.single(), async (request, response) => {
   s3.upload(params, async (err, dataa) => {
     if (err) {
       console.error(err);
-      return response.status(500).send('Error uploading file');
+      return response.status(500).send("Error uploading file");
     }
-   const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`
+    const fileLink = `https://juicepress-capstone-project.onrender.com/${request.file.originalname}`;
     return response.send({
-            status: "success",
-            fileLink
-          });
+      status: "success",
+      fileLink,
+    });
   });
 });
 
@@ -184,7 +186,7 @@ app.post('/upload', upload.single(), async (request, response) => {
 
 //     await s3.send(command)
 
-//storing post data into database ex: caption, pic 
+//storing post data into database ex: caption, pic
 // const post = await prisma.posts.create({
 //     data: {
 //         caption: req.body.caption,
@@ -200,49 +202,58 @@ app.post('/upload', upload.single(), async (request, response) => {
 // export const handler = serverless(app)
 
 // Slack routes
-app.get('/messages', async (req, res) => {
+app.get("/messages", async (req, res) => {
   try {
-    const response = await axios.get('https://slack.com/api/conversations.history', {
-      params: { channel: channelId },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      "https://slack.com/api/conversations.history",
+      {
+        params: { channel: channelId },
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     const messagesWithUsers = response.data.messages.map((message) => ({
       ...message,
       user: userIdToUserMap[message.user]?.name || message.user,
-      avatar: userIdToUserMap[message.user]?.avatar || 'default_avatar_url',
+      avatar: userIdToUserMap[message.user]?.avatar || "default_avatar_url",
     }));
 
     res.json({ messages: messagesWithUsers });
   } catch (error) {
-    console.error('Error fetching messages:', error);
+    console.error("Error fetching messages:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-app.get('/channel-info', async (req, res) => {
+app.get("/channel-info", async (req, res) => {
   try {
-    const response = await axios.get('https://slack.com/api/conversations.info', {
-      params: { channel: channelId },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      "https://slack.com/api/conversations.info",
+      {
+        params: { channel: channelId },
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     res.json(response.data);
   } catch (error) {
-    console.error('Error fetching channel info:', error);
+    console.error("Error fetching channel info:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-app.get('/channel-users', async (req, res) => {
+app.get("/channel-users", async (req, res) => {
   try {
-    const response = await axios.get('https://slack.com/api/conversations.members', {
-      params: { channel: channelId },
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(
+      "https://slack.com/api/conversations.members",
+      {
+        params: { channel: channelId },
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
 
     const users = await Promise.all(
       response.data.members.map(async (user) => {
-        const userInfo = await axios.get('https://slack.com/api/users.info', {
+        const userInfo = await axios.get("https://slack.com/api/users.info", {
           params: { user },
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -255,25 +266,25 @@ app.get('/channel-users', async (req, res) => {
     );
     res.json({ users });
   } catch (error) {
-    console.error('Error fetching users:', error);
+    console.error("Error fetching users:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
 app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Server is now listening on port ${process.env.SERVER_PORT}`)
-})
+  console.log(`Server is now listening on port ${process.env.SERVER_PORT}`);
+});
 // app.use('/api/s3', s3Router)
 
 // app.listen(config.PORT, () => {
 //     console.log(`Server listening on http://localhost:${config.PORT}`)
 // })
 
-mongoose.connect(process.env.ATLAS_CONNECTION)
+mongoose.connect(process.env.ATLAS_CONNECTION);
 const db = mongoose.connection;
 db.on("connected", () => {
-  console.log("Connected to database")
+  console.log("Connected to database");
 });
 db.on("error", (err) => {
-  console.log(err)
-})
+  console.log(err);
+});
