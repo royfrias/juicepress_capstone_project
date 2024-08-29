@@ -8,12 +8,11 @@ import cors from "cors";
 import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
-import config from "./config/index.js";
+// import config from "./config/index.js";
 import AWS from "aws-sdk";
 import multer from "multer";
 import Announcement from "./models/announcements.js";
 import { request } from "http";
-// import s3Router from './controllers/routes-s3.js';
 
 // define __dirname in ES modules
 //  __filename is a URL, which it is in ES modules
@@ -101,13 +100,13 @@ app.get("*", (request, response) =>
   response.sendFile(path.join(__dirname, "/client/dist/index.html"))
 );
 
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
-  region: "us-east-1",
-});
+// AWS.config.update({
+//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.AWS_SECRET_KEY,
+//   region: "us-east-1",
+// });
 
-const s3 = new AWS.S3();
+// const s3 = new AWS.S3();
 
 // async function createPresignedPost({ key, contentType }) {
 //   const command = new PutObjectCommand({
