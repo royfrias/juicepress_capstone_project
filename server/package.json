@@ -25,8 +25,7 @@
   "contributors": [],
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node app.js",
-    "test": ""
+    "build": "npm install --prefix ./client && npm run build --prefix ./client && npm install"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.400.0",

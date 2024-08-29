@@ -60,12 +60,9 @@ let userIdToUserMap = {}; // Added Slack configuration
 // Slack function to fetch user map
 const fetchUserMap = async () => {
   try {
-    const response = await axios.get(
-      "https://juicepress-capstone-project.onrender.com/api/users.list",
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const response = await axios.get("https://slack.com/api/users.list", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
     if (response.data && response.data.ok) {
       userIdToUserMap = response.data.members.reduce((map, user) => {
@@ -97,6 +94,12 @@ app.use("/", router);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (request, response) =>
+  response.sendFile(path.join(__dirname, "/client/dist/index.html"))
+);
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -160,7 +163,7 @@ app.post("/upload", upload.single(), async (request, response) => {
       console.error(err);
       return response.status(500).send("Error uploading file");
     }
-    const fileLink = `https://juicepress-capstone-project.onrender.com/${request.file.originalname}`;
+    const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`;
     return response.send({
       status: "success",
       fileLink,
