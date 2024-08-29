@@ -92,7 +92,7 @@ app.use(express.json());
 app.use("/", router);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(express.static(path.join(__dirname, "/client/dist")));
 
