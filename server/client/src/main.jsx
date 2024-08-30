@@ -1,22 +1,19 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App.jsx';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./index.js";
+import "./index.css";
 
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import LogIn from './components/LogIn.jsx';
-import SignUp from './components/SignUp.jsx';
-import Home from './components/Home.jsx';
-import AdminLogIn from './components/AdminLogIn.jsx';
-import AdminSignUp from './components/AdminSignUp.jsx';
-import CreateAnnouncement from './components/CreateAnnouncement.jsx';
-import Profile from './components/Profile.jsx';
-import AllAnnouncements from './components/AllAnnouncements.jsx';
-import Slack from './components/Slack.jsx';
-import Learning from './components/Learning.jsx'
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LogIn from "./components/LogIn.jsx";
+import SignUp from "./components/SignUp.jsx";
+import Home from "./components/Home.jsx";
+import AdminLogIn from "./components/AdminLogIn.jsx";
+import AdminSignUp from "./components/AdminSignUp.jsx";
+import CreateAnnouncement from "./components/CreateAnnouncement.jsx";
+import Profile from "./components/Profile.jsx";
+import AllAnnouncements from "./components/AllAnnouncements.jsx";
+import Slack from "./components/Slack.jsx";
+import Learning from "./components/Learning.jsx";
 // import EditAnnouncement from './components/EditAnnouncement.jsx';
 
 const router = createBrowserRouter([
@@ -34,36 +31,36 @@ const router = createBrowserRouter([
   },
   {
     path: "/adminLogin",
-    element: <AdminLogIn></AdminLogIn>
+    element: <AdminLogIn></AdminLogIn>,
   },
   {
     path: "/adminSignup",
-    element: <AdminSignUp></AdminSignUp>
+    element: <AdminSignUp></AdminSignUp>,
   },
   {
     path: "/createannouncement",
-    element: <CreateAnnouncement></CreateAnnouncement>
+    element: <CreateAnnouncement></CreateAnnouncement>,
   },
   {
     path: "/profile",
-    element: <Profile> </Profile>
+    element: <Profile> </Profile>,
   },
   {
     path: "/announcements",
-    element: <AllAnnouncements> </AllAnnouncements>
+    element: <AllAnnouncements> </AllAnnouncements>,
   },
   {
     path: "/slack",
-    element: <Slack></Slack> 
+    element: <Slack></Slack>,
   },
   {
     path: "/learning",
-    element: <Learning></Learning> 
-  }
+    element: <Learning></Learning>,
+  },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

@@ -162,7 +162,7 @@ app.post("/upload", upload.single(), async (request, response) => {
       console.error(err);
       return response.status(500).send("Error uploading file");
     }
-    const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`;
+    const fileLink = `http://localhost:3000/${request.file.originalname}`;
     return response.send({
       status: "success",
       fileLink,
