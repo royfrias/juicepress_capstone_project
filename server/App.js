@@ -92,13 +92,7 @@ app.use(express.json());
 app.use("/", router);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-app.use(express.static(path.join(__dirname, "/client/dist")));
-
-app.get("*", (request, response) =>
-  response.sendFile(path.join(__dirname, "/client/dist/index.html"))
-);
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // AWS.config.update({
 //   accessKeyId: process.env.AWS_ACCESS_KEY_ID,

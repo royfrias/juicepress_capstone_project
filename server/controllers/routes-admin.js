@@ -3,92 +3,92 @@ import Admin from "../models/admin.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 // import validationMiddleware from "../middleware/validationMiddleware.js";
-import adminValidationMiddleware from "../middleware/adminValidationMiddleware.js"
+import adminValidationMiddleware from "../middleware/adminValidationMiddleware.js";
 
 const router = Router();
 
 //checks to see if user exists and if not adds new user to database
 router.post("/adminSignup", async (request, response) => {
-    try {
-        //checking if user exists in database
-        const AdminExists = await Admin.exists({
-            employeeID: request.body.employeeID,
-            email: request.body.email
-        })
+  try {
+    // Check if the admin already exists in the database
+    const AdminExists = await Admin.exists({
+      $or: [
+        { employeeID: request.body.employeeID },
+        { email: request.body.email },
+      ],
+    });
 
-        //user does not exist in database, create new user
-        if (AdminExists === null) {
-
-            //created variable for hashing password
-            const hashedPassword = await bcryptjs.hash(request.body.password, 10);
-
-            const admin = new Admin({
-                firstName: request.body.firstName,
-                lastName: request.body.lastName,
-                password: hashedPassword,
-                employeeID: request.body.employeeID,
-                email: request.body.email
-            });
-
-
-            //save new user to database
-            await admin.save();
-
-            //allowing user to access chat server
-            const tokenAdmin = jwt.sign({ id: admin._id },
-                process.env.SECRET_KEY);
-
-            //TODO: const tokenAdmin
-
-            response.send({
-                message: "Admin Successfully added!",
-                tokenAdmin,
-                admin
-            });
-        } else {
-            response.send("Admin already taken!");
-        }
-    } catch (error) {
-        response.send(error.message);
+    if (AdminExists) {
+      return response.status(409).json({ message: "Admin already exists!" });
     }
+
+    // Hash the password
+    const hashedPassword = await bcryptjs.hash(request.body.password, 10);
+
+    // Create a new admin
+    const admin = new Admin({
+      firstName: request.body.firstName,
+      lastName: request.body.lastName,
+      password: hashedPassword,
+      employeeID: request.body.employeeID,
+      email: request.body.email,
+    });
+
+    // Save the new admin to the database
+    await admin.save();
+
+    // Generate a JWT token for the admin
+    const tokenAdmin = jwt.sign({ id: admin._id }, process.env.SECRET_KEY);
+
+    response.status(201).json({
+      message: "Admin successfully added!",
+      tokenAdmin,
+      admin,
+    });
+  } catch (error) {
+    response.status(500).json({ message: error.message });
+  }
 });
-
-
 
 // log user in and verify token
 router.post("/adminLogin", async (request, response) => {
   try {
-    const admin = await Admin.findOne({ 
-        employeeID: request.body.employeeID,
-        email: request.body.email
-     });
+    // Find the admin by employeeID and email
+    const admin = await Admin.findOne({
+      employeeID: request.body.employeeID,
+      email: request.body.email,
+    });
 
-    if (admin && await bcryptjs.compare(request.body.password, admin.password) ) {
-      // User not found
+    // If the admin is found and the password matches
+    if (
+      admin &&
+      (await bcryptjs.compare(request.body.password, admin.password))
+    ) {
+      // Generate a JWT token for the admin
       const tokenAdmin = jwt.sign({ id: admin._id }, process.env.SECRET_KEY);
-      //TODO: const tokenAdmin
-      response.send({
-        message: "Success",
-        tokenAdmin
+
+      response.status(200).json({
+        message: "Login successful",
+        tokenAdmin,
       });
     } else {
-        response.status(401).send({
-        message: "Invalid username or password"
-     })
+      // If the login credentials are invalid
+      response.status(401).json({
+        message: "Invalid employee ID, email, or password",
+      });
     }
   } catch (err) {
-    response.status(500).send({ message: err.message });
+    response.status(500).json({ message: err.message });
   }
 });
 
 //displaying admin username and admin pic on home pg after user logs in
 router.get("/adminUsername", adminValidationMiddleware, (request, response) => {
   try {
-
-    response.send(request.admin)
-
+    response.status(200).json(request.admin);
   } catch (error) {
-    response.status(500).send({ message: err.message })
+    response.status(500).json({ message: error.message });
   }
 });
+
 export default router;
