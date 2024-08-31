@@ -89,10 +89,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "../client/build")));
 app.use("/", router);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
 
 AWS.config.update({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -283,4 +289,8 @@ db.on("connected", () => {
 });
 db.on("error", (err) => {
   console.log(err);
+});
+
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`Server is now listening on port ${process.env.SERVER_PORT}`);
 });
