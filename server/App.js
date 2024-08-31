@@ -8,7 +8,7 @@ import cors from "cors";
 import axios from "axios";
 import path from "path";
 import { fileURLToPath } from "url";
-// import config from "./config/index.js";
+import config from "./config/index.js";
 import AWS from "aws-sdk";
 import multer from "multer";
 import Announcement from "./models/announcements.js";
@@ -94,13 +94,13 @@ app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// AWS.config.update({
-//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.AWS_SECRET_KEY,
-//   region: "us-east-1",
-// });
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  region: "us-east-1",
+});
 
-// const s3 = new AWS.S3();
+const s3 = new AWS.S3();
 
 // async function createPresignedPost({ key, contentType }) {
 //   const command = new PutObjectCommand({
@@ -156,7 +156,7 @@ app.post("/upload", upload.single(), async (request, response) => {
       console.error(err);
       return response.status(500).send("Error uploading file");
     }
-    const fileLink = `http://localhost:3000/${request.file.originalname}`;
+    const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`;
     return response.send({
       status: "success",
       fileLink,

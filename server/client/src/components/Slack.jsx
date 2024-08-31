@@ -63,7 +63,7 @@ const Slack = () => {
     <div className="slack-container">
       <div className="sidebar">
         <button
-          onClick={() => (window.location.href = "http://localhost:3000/home")}
+          onClick={() => (window.location.href = "http://localhost:5173/home")}
           className="home-button"
         >
           Home
