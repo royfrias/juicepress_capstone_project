@@ -89,15 +89,19 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-app.use(express.static(path.join(__dirname, "client", "dist")));
 app.use("/", router);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+  const filePath = path.join(__dirname, "client", "dist", "index.html");
+  res.sendFile(filePath, (err) => {
+    if (err) {
+      console.log("Error sending file:", filePath);
+      res.status(404).send("Page not found");
+    }
+  });
 });
 
 AWS.config.update({
