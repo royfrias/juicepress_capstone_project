@@ -11,7 +11,9 @@ const Slack = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch("http://localhost:3000/messages");
+        const response = await fetch(
+          "https://juicepress-capstone-project.onrender.com/messages"
+        );
         const data = await response.json();
 
         // Process messages
@@ -36,7 +38,9 @@ const Slack = () => {
 
     const fetchChannelInfo = async () => {
       try {
-        const response = await fetch("http://localhost:3000/channel-info");
+        const response = await fetch(
+          "https://juicepress-capstone-project.onrender.com/channel-info"
+        );
         const data = await response.json();
         setChannelInfo(data.channel);
       } catch (error) {
@@ -46,7 +50,9 @@ const Slack = () => {
 
     const fetchUsers = async () => {
       try {
-        const response = await fetch("http://localhost:3000/channel-users");
+        const response = await fetch(
+          "https://juicepress-capstone-project.onrender.com/channel-users"
+        );
         const data = await response.json();
         setUsers(data.users);
       } catch (error) {
