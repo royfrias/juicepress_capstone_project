@@ -81,6 +81,8 @@ const fetchUserMap = async () => {
 
 fetchUserMap(); // Fetch user map initially
 
+const pathToDist = path.join(__dirname, "..", "client", "dist");
+
 const app = express();
 // const prisma = new PrismaClient()----MO
 
@@ -94,11 +96,12 @@ app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+app.use(express.static(pathToDist));
+
 app.get("*", (req, res) => {
-  const filePath = path.join(__dirname, "client", "dist", "index.html");
-  res.sendFile(filePath, (err) => {
+  res.sendFile(path.join(pathToDist, "index.html"), (err) => {
     if (err) {
-      console.log("Error sending file:", filePath);
+      console.error("Error sending file:", err);
       res.status(404).send("Page not found");
     }
   });
