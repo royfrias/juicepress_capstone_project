@@ -95,13 +95,13 @@ app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-AWS.config.update({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_KEY,
-  region: "us-east-1",
-});
+// AWS.config.update({
+//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//   secretAccessKey: process.env.AWS_SECRET_KEY,
+//   region: "us-east-1",
+// });
 
-const s3 = new AWS.S3();
+// const s3 = new AWS.S3();
 
 // async function createPresignedPost({ key, contentType }) {
 //   const command = new PutObjectCommand({
@@ -123,47 +123,47 @@ const upload = multer({
   },
 });
 
-app.post("/upload", upload.single(), async (request, response) => {
-  // const announcementData = {
-  //   announcementTitle: request.body.announcementTitle,
-  //   announcementContent: request.body.announcementContent,
-  //   timestamp: request.body.timestamp,
-  //   AWSLink: `https://juicepress1.s3.amazonaws.com/${request.file}`
-  // };
+// app.post("/upload", upload.single(), async (request, response) => {
+//   // const announcementData = {
+//   //   announcementTitle: request.body.announcementTitle,
+//   //   announcementContent: request.body.announcementContent,
+//   //   timestamp: request.body.timestamp,
+//   //   AWSLink: `https://juicepress1.s3.amazonaws.com/${request.file}`
+//   // };
 
-  // // if(request.files.image) {
-  // //   announcementData.image = request.files.image[0].filename;
-  // // };
+//   // // if(request.files.image) {
+//   // //   announcementData.image = request.files.image[0].filename;
+//   // // };
 
-  // // if (request.files.video) {
-  // //   announcementData.video = request.files.video[0].filename;
-  // // };
+//   // // if (request.files.video) {
+//   // //   announcementData.video = request.files.video[0].filename;
+//   // // };
 
-  // const announcement = new Announcement(announcementData);
-  // announcement.save();
-  // response.send({
-  //   message: "Announcement was successfully posted.",
-  //   announcement,
-  // });
+//   // const announcement = new Announcement(announcementData);
+//   // announcement.save();
+//   // response.send({
+//   //   message: "Announcement was successfully posted.",
+//   //   announcement,
+//   // });
 
-  const params = {
-    Bucket: "juicepress1",
-    Key: request.file.originalname,
-    Body: request.file.buffer,
-  };
+//   const params = {
+//     Bucket: "juicepress1",
+//     Key: request.file.originalname,
+//     Body: request.file.buffer,
+//   };
 
-  s3.upload(params, async (err, dataa) => {
-    if (err) {
-      console.error(err);
-      return response.status(500).send("Error uploading file");
-    }
-    const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`;
-    return response.send({
-      status: "success",
-      fileLink,
-    });
-  });
-});
+//   s3.upload(params, async (err, dataa) => {
+//     if (err) {
+//       console.error(err);
+//       return response.status(500).send("Error uploading file");
+//     }
+//     const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`;
+//     return response.send({
+//       status: "success",
+//       fileLink,
+//     });
+//   });
+// });
 
 //storing file by sending to s3 bucket--->MO
 // app.post("/api/posts", upload.single(""), async (req, res) => {
