@@ -25,6 +25,7 @@
   "contributors": [],
   "scripts": {
     "dev": "nodemon App.js",
+    "start": "node App.js",
     "build": "npm install --prefix ./client && npm run build --prefix ./client && npm install"
   },
   "dependencies": {
