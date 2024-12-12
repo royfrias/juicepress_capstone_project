@@ -88,13 +88,26 @@ const app = express();
 // const storage = multer.memoryStorage()---->MO
 // const upload = multer({ storage: storage})---->MO
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://juicepress-capstone-project-server-side.vercel.app/"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+  })
+);
 app.use(express.json());
-app.use("/", router);
+console.log("Setting up the / route");
+app.use(
+  "/",
+  (req, res, next) => {
+    console.log("Accessed / route");
+    next(); // Proceed to the next middleware/route handler
+  },
+  router
+);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
+console.log(path.join(__dirname, "uploads"));
 // AWS.config.update({
 //   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
 //   secretAccessKey: process.env.AWS_SECRET_KEY,
