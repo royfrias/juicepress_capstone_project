@@ -11,8 +11,5 @@
       "config": { "distDir": "client/dist" }
     }
   ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "server/App.js" },
-    { "src": "/(.*)", "dest": "client/dist/$1" }
-  ]
+  "routes": [{ "src": "/(.*)", "dest": "client/dist/index.html" }]
 }
