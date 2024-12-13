@@ -88,33 +88,20 @@ const app = express();
 // const storage = multer.memoryStorage()---->MO
 // const upload = multer({ storage: storage})---->MO
 
-app.use(
-  cors({
-    origin: ["https://juicepress-capstone-project-server-side.vercel.app/"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
+app.use(cors());
 app.use(express.json());
-console.log("Setting up the / route");
-app.use(
-  "/",
-  (req, res, next) => {
-    console.log("Accessed / route");
-    next(); // Proceed to the next middleware/route handler
-  },
-  router
-);
+app.use("/", router);
 app.use("/user", userRouter);
 app.use("/admin", adminRouter);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-console.log(path.join(__dirname, "uploads"));
-// AWS.config.update({
-//   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-//   secretAccessKey: process.env.AWS_SECRET_KEY,
-//   region: "us-east-1",
-// });
 
-// const s3 = new AWS.S3();
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+  region: "us-east-1",
+});
+
+const s3 = new AWS.S3();
 
 // async function createPresignedPost({ key, contentType }) {
 //   const command = new PutObjectCommand({
@@ -136,47 +123,47 @@ const upload = multer({
   },
 });
 
-// app.post("/upload", upload.single(), async (request, response) => {
-//   // const announcementData = {
-//   //   announcementTitle: request.body.announcementTitle,
-//   //   announcementContent: request.body.announcementContent,
-//   //   timestamp: request.body.timestamp,
-//   //   AWSLink: `https://juicepress1.s3.amazonaws.com/${request.file}`
-//   // };
+app.post("/upload", upload.single(), async (request, response) => {
+  // const announcementData = {
+  //   announcementTitle: request.body.announcementTitle,
+  //   announcementContent: request.body.announcementContent,
+  //   timestamp: request.body.timestamp,
+  //   AWSLink: `https://juicepress1.s3.amazonaws.com/${request.file}`
+  // };
 
-//   // // if(request.files.image) {
-//   // //   announcementData.image = request.files.image[0].filename;
-//   // // };
+  // // if(request.files.image) {
+  // //   announcementData.image = request.files.image[0].filename;
+  // // };
 
-//   // // if (request.files.video) {
-//   // //   announcementData.video = request.files.video[0].filename;
-//   // // };
+  // // if (request.files.video) {
+  // //   announcementData.video = request.files.video[0].filename;
+  // // };
 
-//   // const announcement = new Announcement(announcementData);
-//   // announcement.save();
-//   // response.send({
-//   //   message: "Announcement was successfully posted.",
-//   //   announcement,
-//   // });
+  // const announcement = new Announcement(announcementData);
+  // announcement.save();
+  // response.send({
+  //   message: "Announcement was successfully posted.",
+  //   announcement,
+  // });
 
-//   const params = {
-//     Bucket: "juicepress1",
-//     Key: request.file.originalname,
-//     Body: request.file.buffer,
-//   };
+  const params = {
+    Bucket: "juicepress1",
+    Key: request.file.originalname,
+    Body: request.file.buffer,
+  };
 
-//   s3.upload(params, async (err, dataa) => {
-//     if (err) {
-//       console.error(err);
-//       return response.status(500).send("Error uploading file");
-//     }
-//     const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`;
-//     return response.send({
-//       status: "success",
-//       fileLink,
-//     });
-//   });
-// });
+  s3.upload(params, async (err, dataa) => {
+    if (err) {
+      console.error(err);
+      return response.status(500).send("Error uploading file");
+    }
+    const fileLink = `https://juicepress1.s3.amazonaws.com/${request.file.originalname}`;
+    return response.send({
+      status: "success",
+      fileLink,
+    });
+  });
+});
 
 //storing file by sending to s3 bucket--->MO
 // app.post("/api/posts", upload.single(""), async (req, res) => {
@@ -297,8 +284,4 @@ db.on("connected", () => {
 });
 db.on("error", (err) => {
   console.log(err);
-});
-
-app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
 });
