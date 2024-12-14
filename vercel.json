@@ -6,14 +6,14 @@
       "use": "@vercel/static"
     },
     {
-      "src": "server/app.js",
+      "src": "server/App.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "server/app.js"
+      "dest": "server/App.js"
     },
     {
       "src": "/(.*)",
