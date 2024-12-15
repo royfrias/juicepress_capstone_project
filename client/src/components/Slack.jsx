@@ -11,9 +11,7 @@ const Slack = () => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await fetch(
-          "https://juicepress-capstone-project-server-side.vercel.app//messages"
-        );
+        const response = await fetch("http://localhost:3000/messages");
         const data = await response.json();
 
         // Process messages
@@ -38,9 +36,7 @@ const Slack = () => {
 
     const fetchChannelInfo = async () => {
       try {
-        const response = await fetch(
-          "https://juicepress-capstone-project-server-side.vercel.app//channel-info"
-        );
+        const response = await fetch("http://localhost:3000/channel-info");
         const data = await response.json();
         setChannelInfo(data.channel);
       } catch (error) {
@@ -50,9 +46,7 @@ const Slack = () => {
 
     const fetchUsers = async () => {
       try {
-        const response = await fetch(
-          "https://juicepress-capstone-project-server-side.vercel.app//channel-users"
-        );
+        const response = await fetch("http://localhost:3000/channel-users");
         const data = await response.json();
         setUsers(data.users);
       } catch (error) {
