@@ -88,7 +88,12 @@ const app = express();
 // const storage = multer.memoryStorage()---->MO
 // const upload = multer({ storage: storage})---->MO
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://juicepress-client-side.onrender.com",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use("/", router);
 app.use("/user", userRouter);
