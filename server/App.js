@@ -90,8 +90,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://juicepress-client-side.onrender.com",
-    credentials: true,
+    origin: "*",
+    methods: ["GET", "POST"],
   })
 );
 app.use(express.json());
