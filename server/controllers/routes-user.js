@@ -9,6 +9,8 @@ const router = Router();
 
 //checks to see if user exists and if not adds new user to database
 router.post("/user/signup", async (request, response) => {
+  console.log("Received signup request:", request.body);
+
   try {
     //checking if user exists in database
     const UserExists = await User.exists({
@@ -42,7 +44,8 @@ router.post("/user/signup", async (request, response) => {
       response.send("User already taken!");
     }
   } catch (error) {
-    response.send(error.message);
+    console.error("Error processing signup:", error.message);
+    response.status(500).send(error.message);
   }
 });
 

@@ -13,6 +13,9 @@ export default function SignUp({ setToken }) {
 
   async function submitSignUp(event) {
     event.preventDefault(); //stop page from refreshing on submit
+
+    console.log(import.meta.env.VITE_SERVER_URL);
+
     //send employeeID and password to backend
     const response = await fetch(
       `${import.meta.env.VITE_SERVER_URL}/user/signup`,
@@ -30,12 +33,13 @@ export default function SignUp({ setToken }) {
       }
     );
 
-    if (response.status === 200) {
-      const body = await response.json();
-      //save jwt to local storage
-      navigate("/");
+    const body = await response.json();
+
+    if (response.ok === 200) {
+      console.log("Signup successful:", body);
+      navigate("/"); // Redirect on success
     } else {
-      console.log(body.message);
+      console.error("Signup failed:", body.message || body);
     }
   }
 
