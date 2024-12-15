@@ -21,6 +21,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+// Example route for root in routes.js
+router.get("/", (req, res) => {
+  res.send("Welcome to the JuicePress API");
+});
+
 //displays all announcements on homepage
 router.get("/announcements", async (request, response) => {
   console.log("Accessed /announcements route");
