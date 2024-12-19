@@ -4,6 +4,7 @@ import "./styles/Home.css";
 import JPLogo from "../images/JPLogo.png";
 import CreateAnnouncement from "./CreateAnnouncement";
 import SignOut from "./SignOut";
+import SignUp from "./SignUp";
 import Popup from "reactjs-popup";
 // import admin from "../../../server/models/admin";
 // import user from "../../../server/models/user";
