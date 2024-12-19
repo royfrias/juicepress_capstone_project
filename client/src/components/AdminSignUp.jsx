@@ -1,7 +1,7 @@
 import React from "react";
 import JPLogo from "../images/JPLogo.png";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function AdminSignUp({ setToken }) {
   const [firstName, setFirstName] = useState("");
@@ -83,12 +83,12 @@ export default function AdminSignUp({ setToken }) {
           Sign Up
         </button>
         <p>Already have an account?</p>
-        <a
-          href="/adminLogin"
+        <Link
+          to="/adminLogin"
           className="btn bg-blue-magic text-black hover:bg-mango-madness"
         >
           Log In
-        </a>
+        </Link>
         <img src={JPLogo} alt="Juice Press Logo" width="10%" height="10%"></img>
       </form>
     </div>
