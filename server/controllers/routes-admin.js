@@ -2,7 +2,7 @@ import { Router, request } from "express";
 import Admin from "../models/admin.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-// import validationMiddleware from "../middleware/validationMiddleware.js";
+import validationMiddleware from "../middleware/validationMiddleware.js";
 import adminValidationMiddleware from "../middleware/adminValidationMiddleware.js";
 
 const router = Router();

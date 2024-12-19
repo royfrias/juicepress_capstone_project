@@ -3,7 +3,7 @@ import User from "../models/user.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import userValidationMiddleware from "../middleware/validationMiddleware.js";
-// import validationMiddleware from "../middleware/validationMiddleware.js";
+import validationMiddleware from "../middleware/validationMiddleware.js";
 
 const router = Router();
 
