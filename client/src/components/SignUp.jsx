@@ -96,7 +96,7 @@ export default function SignUp({ setToken }) {
 
         {/* Conditionally render the success or error message */}
         {successMessage && (
-          <div className="mt-4 text-center text-xl font-bold text-green-600 bg-green-200 p-4 rounded-md">
+          <div className="mt-4 text-center text-xl font-bold bg-green-500 p-4 rounded-md">
             {successMessage}
           </div>
         )}
