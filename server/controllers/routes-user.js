@@ -8,7 +8,7 @@ import userValidationMiddleware from "../middleware/validationMiddleware.js";
 const router = Router();
 
 //checks to see if user exists and if not adds new user to database
-router.post("/user/signup", async (request, response) => {
+router.post("/signup", async (request, response) => {
   console.log("Received signup request:", request.body);
 
   try {
