@@ -40,8 +40,8 @@ export default function SignUp({ setToken }) {
       if (response.ok) {
         console.log("Signup successful:", body);
         setSuccessMessage("Signup successful! Welcome!"); // Set the success message
-        setTimeout(() => navigate("/"), 1000);
-        navigate("/"); // Redirect on success
+        setTimeout(() => navigate("/"), 5000);
+        // Redirect on success
       } else {
         console.error("Signup failed:", body.message || "Unknown error");
         setSuccessMessage("Signup failed. Please try again.");
@@ -96,7 +96,7 @@ export default function SignUp({ setToken }) {
 
         {/* Conditionally render the success or error message */}
         {successMessage && (
-          <div className="mt-4 text-center text-xl font-bold">
+          <div className="mt-4 text-center text-xl font-bold bg-green-200 p-4 rounded-md">
             {successMessage}
           </div>
         )}
