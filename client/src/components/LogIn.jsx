@@ -60,7 +60,7 @@ export default function LogIn() {
       </button>
       <p>Don't have an account?</p>
       <Link
-        href="/signup"
+        to="/signup"
         className="btn  bg-blue-magic text-black  hover:bg-mango-madness"
       >
         {" "}
@@ -68,7 +68,7 @@ export default function LogIn() {
       </Link>
       <p>Have a Juice Press Email?</p>
       <Link
-        href="/adminLogin"
+        to="/adminLogin"
         className="btn  bg-blue-magic text-black hover:bg-mango-madness"
       >
         Click Here
