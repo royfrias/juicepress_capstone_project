@@ -9,6 +9,7 @@ export default function SignUp({ setToken }) {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [employeeID, setEmployeeID] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
 
   async function submitSignUp(event) {
@@ -38,10 +39,12 @@ export default function SignUp({ setToken }) {
 
       if (response.ok) {
         console.log("Signup successful:", body);
+        setSuccessMessage("Signup successful! Welcome!"); // Set the success message
+        setTimeout(() => navigate("/"), 1000);
         navigate("/"); // Redirect on success
       } else {
         console.error("Signup failed:", body.message || "Unknown error");
-        alert(body.message || "Signup failed. Please try again");
+        setSuccessMessage("Signup failed. Please try again.");
       }
     } catch (error) {
       console.error("Error during signup:", error);
@@ -90,6 +93,14 @@ export default function SignUp({ setToken }) {
         >
           Sign Up
         </button>
+
+        {/* Conditionally render the success or error message */}
+        {successMessage && (
+          <div className="mt-4 text-center text-xl font-bold">
+            {successMessage}
+          </div>
+        )}
+
         <p>Already have an account?</p>
         <a
           href="/"
