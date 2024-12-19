@@ -17,29 +17,35 @@ export default function SignUp({ setToken }) {
     console.log(import.meta.env.VITE_SERVER_URL);
 
     //send employeeID and password to backend
-    const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/user/signup`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName,
-          lastName,
-          password,
-          employeeID,
-        }),
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/user/signup`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            password,
+            employeeID,
+          }),
+        }
+      );
+
+      const body = await response.json();
+
+      if (response.ok) {
+        console.log("Signup successful:", body);
+        navigate("/"); // Redirect on success
+      } else {
+        console.error("Signup failed:", body.message || "Unknown error");
+        alert(body.message || "Signup failed. Please try again");
       }
-    );
-
-    const body = await response.json();
-
-    if (response.ok === 200) {
-      console.log("Signup successful:", body);
-      navigate("/"); // Redirect on success
-    } else {
-      console.error("Signup failed:", body.message || body);
+    } catch (error) {
+      console.error("Error during signup:", error);
+      alert("There was an error with the signup. Please try again later.");
     }
   }
 
@@ -56,24 +62,28 @@ export default function SignUp({ setToken }) {
           className="input input-bordered border-blue-magic w-full max-w-xs"
           placeholder="First Name"
           onChange={(e) => setFirstName(e.target.value)}
-        ></input>
+          value={firstName}
+        />
         <input
           className="input input-bordered border-mango-madness w-full max-w-xs"
           placeholder="Last Name"
           onChange={(e) => setLastName(e.target.value)}
-        ></input>
+          value={lastName}
+        />
         <input
           className="input input-bordered border-blue-magic w-full max-w-xs"
           placeholder="Employee ID"
           type="number"
           onChange={(e) => setEmployeeID(e.target.value)}
-        ></input>
+          value={employeeID}
+        />
         <input
           className="input input-bordered border-mango-madness w-full max-w-xs"
           placeholder="Password"
           type="password"
           onChange={(e) => setPassword(e.target.value)}
-        ></input>
+          value={password}
+        />
         <button
           type="submit"
           className="btn bg-blue-magic text-black hover:bg-mango-madness"
