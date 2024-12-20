@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: JuicePress
+    env: static
+    buildCommand: npm run build
+    staticPublishPath: dist
+    routes:
+      - source: /.*
+        destination: /index.html
