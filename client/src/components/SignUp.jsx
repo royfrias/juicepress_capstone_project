@@ -2,7 +2,7 @@ import React from "react";
 // import './styles/SignUp.css';
 import JPLogo from "../images/JPLogo.png";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function SignUp({ setToken }) {
   const [firstName, setFirstName] = useState("");
@@ -102,19 +102,19 @@ export default function SignUp({ setToken }) {
         )}
 
         <p>Already have an account?</p>
-        <a
-          href="/"
+        <Link
+          to="/"
           className="btn bg-blue-magic text-black hover:bg-mango-madness"
         >
           Log In
-        </a>
+        </Link>
         <p>Have a Juice Press Email?</p>
-        <a
-          href="/adminSignup"
+        <Link
+          to="/adminSignup"
           className="btn bg-blue-magic text-black hover:bg-mango-madness"
         >
           Click Here
-        </a>
+        </Link>
         <img src={JPLogo} alt="Juice Press Logo" width="10%" height="10%"></img>
       </form>
     </div>
