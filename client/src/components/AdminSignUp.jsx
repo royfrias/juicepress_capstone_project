@@ -84,33 +84,33 @@ export default function AdminSignUp({ setToken }) {
 
         {/* Input Fields */}
         <input
-          className="input input-bordered border-mango-madness w-full"
+          className="input input-bordered border-mango-madness w-full max-w-xs"
           placeholder="First Name"
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
         />
         <input
-          className="input input-bordered border-blue-magic w-full"
+          className="input input-bordered border-blue-magic w-full max-w-xs"
           placeholder="Last Name"
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
         />
         <input
-          className="input input-bordered border-mango-madness w-full"
+          className="input input-bordered border-mango-madness w-full max-w-xs"
           placeholder="Employee ID"
           type="number"
           value={employeeID}
           onChange={(e) => setEmployeeID(e.target.value)}
         />
         <input
-          className="input input-bordered border-blue-magic w-full"
+          className="input input-bordered border-blue-magic w-full max-w-xs"
           placeholder="Email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          className="input input-bordered border-mango-madness w-full"
+          className="input input-bordered border-mango-madness w-full max-w-xs"
           placeholder="Password"
           type="password"
           value={password}
@@ -119,7 +119,7 @@ export default function AdminSignUp({ setToken }) {
 
         {/* Submit Button */}
         <button
-          className={`btn w-full ${
+          className={`btn w-full max-w-56 ${
             isLoading ? "bg-gray-400" : "bg-blue-magic hover:bg-mango-madness"
           } text-black`}
           type="submit"
