@@ -65,7 +65,10 @@ router.post("/adminLogin", async (request, response) => {
       (await bcryptjs.compare(request.body.password, admin.password))
     ) {
       // Generate a JWT token for the admin
-      const tokenAdmin = jwt.sign({ id: admin._id }, process.env.SECRET_KEY);
+      const tokenAdmin = jwt.sign(
+        { id: admin._id, role: admin.role },
+        process.env.SECRET_KEY
+      );
 
       response.status(200).json({
         message: "Login successful",

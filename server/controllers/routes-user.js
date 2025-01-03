@@ -61,7 +61,10 @@ router.post("/login", async (request, response) => {
       (await bcryptjs.compare(request.body.password, user.password))
     ) {
       // User not found
-      const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY);
+      const token = jwt.sign(
+        { id: user._id, role: user.role },
+        process.env.SECRET_KEY
+      );
       response.send({
         message: "Success",
         token,

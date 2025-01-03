@@ -21,6 +21,7 @@ const adminSchema = new Schema({
     type: String,
     required: true,
   },
+  role: { type: String, default: "admin" },
 });
 
 export default model("Admin", adminSchema);
