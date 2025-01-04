@@ -2,8 +2,7 @@ import { Router, request } from "express";
 import User from "../models/user.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
-import userValidationMiddleware from "../middleware/validationMiddleware.js";
-import validationMiddleware from "../middleware/validationMiddleware.js";
+import userValidationMiddleware from "../middleware/userValidationMiddleware.js";
 
 const router = Router();
 
@@ -74,8 +73,8 @@ router.post("/login", async (request, response) => {
         message: "Invalid username or password",
       });
     }
-  } catch (err) {
-    response.status(500).send({ message: err.message });
+  } catch (error) {
+    response.status(500).send({ message: error.message });
   }
 });
 
@@ -84,7 +83,7 @@ router.get("/username", userValidationMiddleware, (request, response) => {
   try {
     response.send(request.user);
   } catch (error) {
-    response.status(500).send({ message: err.message });
+    response.status(500).send({ message: error.message });
   }
 });
 

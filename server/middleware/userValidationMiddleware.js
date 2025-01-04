@@ -11,7 +11,7 @@ export default async function userValidationMiddleware(
     if (!token) {
       return response
         .status(401)
-        .json({ error: `No authentication token provided` });
+        .json({ error: "No authentication token provided " });
     }
 
     // verify token via secret key
@@ -29,6 +29,8 @@ export default async function userValidationMiddleware(
     next();
   } catch (error) {
     // Error handler
-    return response.status(401).json({ error: "Unauthorized" });
+    return response
+      .status(401)
+      .json({ error: error.message || "Unauthorized" });
   }
 }

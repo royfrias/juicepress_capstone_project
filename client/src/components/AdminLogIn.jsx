@@ -10,27 +10,32 @@ export default function AdminLogIn() {
 
   async function submitLogIn(event) {
     event.preventDefault();
-    const response = await fetch(
-      `${import.meta.env.VITE_SERVER_URL}/admin/adminLogin`,
-      {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          employeeID,
-          email,
-          password,
-        }),
-      }
-    );
 
-    if (response.status === 200) {
-      const body = await response.json();
-      localStorage.setItem("jwt-tokenAdmin", body.tokenAdmin);
-      navigate("/home");
-    } else {
-      navigate("/adminSignup");
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_SERVER_URL}/admin/adminLogin`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            employeeID,
+            email,
+            password,
+          }),
+        }
+      );
+
+      if (response.status === 200) {
+        const body = await response.json();
+        localStorage.setItem("jwt-tokenAdmin", body.tokenAdmin);
+        navigate("/home");
+      } else {
+        navigate("/adminSignup");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
     }
   }
 
@@ -45,18 +50,21 @@ export default function AdminLogIn() {
           className="input input-bordered border-mango-madness w-full max-w-xs"
           placeholder="Employee ID"
           type="number"
+          value={employeeID}
           onChange={(e) => setEmployeeID(e.target.value)}
         ></input>
         <input
           className="input input-bordered border-blue-magic w-full max-w-xs"
           placeholder="Email"
           type="email"
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         ></input>
         <input
           className="input input-bordered border-mango-madness w-full max-w-xs"
           placeholder="Password"
           type="password"
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></input>
         <button
